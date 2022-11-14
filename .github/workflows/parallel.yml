@@ -1,0 +1,29 @@
+name: Parallel workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  parallel:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        workspace: [a, b, c]
+
+    steps:
+    - name: Install
+      run: yarn install
+
+    - name: Test
+      run: yarn workspace ${{ matrix.workspace }} test
+
+  series:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install
+      run: yarn install
+
+    - name: Test
+      run: yarn test

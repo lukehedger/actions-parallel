@@ -1,0 +1,12 @@
+{
+  "name": "actions-parallel",
+  "private": true,
+  "workspaces": [
+    "a",
+    "b",
+    "c"
+  ],
+  "scripts": {
+    "test": "yarn workspaces run test"
+  }
+}

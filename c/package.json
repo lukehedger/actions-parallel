@@ -1,0 +1,11 @@
+{
+  "name": "c",
+  "version": "1.0.0",
+  "license": "ISC",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "29.3.1"
+  }
+}
