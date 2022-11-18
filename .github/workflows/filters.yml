@@ -32,6 +32,9 @@ jobs:
       - name: Install
         run: yarn install
 
+      - name: Echo changes
+        run: echo ${{ steps.diff.outputs.changes }}
+
       - name: Test
         run: yarn workspace ${{ matrix.workspace }} test
         if: contains(steps.diff.outputs.changes, ${{ matrix.workspace }})
