@@ -22,7 +22,7 @@ jobs:
           filters: .github/workspaces.yml
 
       - name: Set changes output
-        run: echo "changes=${{ steps.filter.outputs }}" >> $GITHUB_OUTPUT
+        run: echo "changes=${{ steps.filter.outputs.changes }}" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
