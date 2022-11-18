@@ -18,14 +18,7 @@ jobs:
       - uses: dorny/paths-filter@v2.11.1
         id: changes
         with:
-          # filters: .github/workspaces.yaml
-          filters: |
-            '@workspace/a':
-              - 'a/**'
-            '@workspace/b':
-              - 'b/**'
-            '@workspace/c':
-              - 'c/**'
+          filters: .github/workspaces.yaml
 
       - name: Setup Node
         uses: actions/setup-node@v3.5.1
