@@ -19,7 +19,7 @@ jobs:
           filters: .github/workspaces.yml
 
       - name: Echo outputs
-        run: echo ${{ toJson(steps.diff.outputs) }}
+        run: echo ${{ toJson(steps.diff.outputs.changes) }}
 
   test:
     runs-on: ubuntu-latest
