@@ -15,16 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
 
-      - uses: dorny/paths-filter@v2
+      - uses: dorny/paths-filter@v2.11.1
         id: changes
         with:
           # filters: .github/workspaces.yaml
           filters: |
-            @workspace/a:
+            '@workspace/a':
               - 'a/**'
-            @workspace/b:
+            '@workspace/b':
               - 'b/**'
-            @workspace/c:
+            '@workspace/c':
               - 'c/**'
 
       - name: Setup Node
