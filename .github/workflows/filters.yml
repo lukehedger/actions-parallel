@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        workspace: ['@workspace/a', '@workspace/b', '@workspace/c']
+        workspace: [a, b, c]
 
     steps:
       - uses: actions/checkout@v3.1.0

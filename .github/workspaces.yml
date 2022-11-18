@@ -1,6 +1,6 @@
-'@workspace/a':
+a:
   - 'a/**'
-'@workspace/b':
+b:
   - 'b/**'
-'@workspace/c':
+c:
   - 'c/**'
