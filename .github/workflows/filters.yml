@@ -21,9 +21,6 @@ jobs:
         with:
           filters: .github/workspaces.yml
 
-      - name: Set changes output
-        run: echo "changes=${{ steps.filter.outputs.changes }}" >> $GITHUB_OUTPUT
-
   test:
     runs-on: ubuntu-latest
 
@@ -32,6 +29,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
+        # TODO: Problem with this is required status checks!!
+        # So fallback is full workspace matrix (can it still be dynamic!?)
+        # And then early exit OR just if on test job
         workspace: ${{ fromJson(needs.diff.outputs.changes) }}
 
     steps:
@@ -45,6 +45,10 @@ jobs:
 
       - name: Install
         run: yarn install
+
+      # TODO: Lint could go here to save double install
+      # - name: Lint
+      #   run: yarn workspace ${{ matrix.workspace }} lint
 
       - name: Test
         run: yarn workspace ${{ matrix.workspace }} test
