@@ -23,7 +23,7 @@ jobs:
           filters: .github/workspaces.yml
 
       - name: Set unchanged output
-        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ fromJson(steps.filter.outputs) }})" >> $GITHUB_OUTPUT
+        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ toJson(steps.filter.outputs) }})" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
