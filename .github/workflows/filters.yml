@@ -38,7 +38,7 @@ jobs:
 
       - name: Echo changed
         run: echo ${{ steps.diff.outputs.changed }}
-        if: steps.diff.outputs.changed
+        if: steps.diff.outputs.changed == 'true'
 
       # - name: Test
       #   run: yarn workspace ${{ matrix.workspace }} test
