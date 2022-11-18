@@ -7,48 +7,47 @@ on:
   workflow_dispatch:
 
 jobs:
-  filters:
+  diff:
     runs-on: ubuntu-latest
 
     outputs:
-      changes: ${{ steps.diff.outputs.changes }}
+      changes: ${{ steps.filter.outputs.changes }}
 
     steps:
       - uses: actions/checkout@v3.1.0
 
       - uses: dorny/paths-filter@v2.11.1
-        id: diff
+        id: filter
         with:
           filters: .github/workspaces.yml
 
       - name: Set changes output
-        run: echo "changes=${{ steps.diff.outputs }}" >> $GITHUB_OUTPUT
+        run: echo "changes=${{ steps.filter.outputs }}" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
 
-    needs: filters
+    needs: diff
 
-    # strategy:
-    #   fail-fast: true
-    #   matrix:
-    #     workspace: ${{ toJson(needs.filters.outputs.changes) }}
+    strategy:
+      fail-fast: true
+      matrix:
+        workspace: ${{ toJson(needs.diff.outputs.changes) }}
 
     steps:
       - uses: actions/checkout@v3.1.0
 
       - name: Echo outputs
-        run: echo ${{ toJson(needs.filters.outputs.changes) }}
+        run: echo ${{ toJson(needs.diff.outputs.changes) }}
 
-      # - name: Setup Node
-      #   uses: actions/setup-node@v3.5.1
-      #   with:
-      #     cache: 'yarn'
-      #     node-version: '18'
+      - name: Setup Node
+        uses: actions/setup-node@v3.5.1
+        with:
+          cache: 'yarn'
+          node-version: '18'
 
-      # - name: Install
-      #   run: yarn install
+      - name: Install
+        run: yarn install
 
-      # - name: Test
-      #   # if: fromJson(steps.diff.outputs.${{ matrix.workspace }}) == true
-      #   run: yarn workspace ${{ matrix.workspace }} test
+      - name: Test
+        run: yarn workspace ${{ matrix.workspace }} test
