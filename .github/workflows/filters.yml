@@ -31,4 +31,4 @@ jobs:
 
       - name: Test
         run: yarn workspace ${{ matrix.workspace }} test
-        if: steps.changes.outputs.${{ matrix.workspace }} == 'true' # Remove true?
+        if: steps.changes.outputs.${{ matrix.workspace }}
