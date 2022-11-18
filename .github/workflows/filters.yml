@@ -24,6 +24,9 @@ jobs:
       - name: Set changes output
         run: echo "changes=${{ steps.filter.outputs.changes }}" >> $GITHUB_OUTPUT
 
+      - name: Echo outputs
+        run: echo ${{ toJson(steps.filter.outputs.changes) }}
+
   test:
     runs-on: ubuntu-latest
 
