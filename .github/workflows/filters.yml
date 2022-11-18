@@ -12,6 +12,7 @@ jobs:
 
     outputs:
       changes: ${{ steps.filter.outputs.changes }}
+      filters: ${{ steps.filter.outputs }}
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -64,5 +65,5 @@ jobs:
 
     steps:
       # - run: echo No test required
-      - run: echo ${{ toJson(needs.diff.outputs) }}
+      - run: echo ${{ toJson(needs.diff.outputs.filters) }}
       # - run: echo "$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ fromJson(needs.diff.outputs) }})"
