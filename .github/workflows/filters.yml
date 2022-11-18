@@ -64,4 +64,5 @@ jobs:
 
     steps:
       # - run: echo No test required
+      - run: echo ${{ fromJson(needs.diff.outputs) }}
       - run: echo "$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ fromJson(needs.diff.outputs) }})"
