@@ -38,7 +38,7 @@ jobs:
         run: yarn install
 
       - name: Echo changed
-        run: echo ${{ steps.filter.outputs.changed }}
+        run: echo ${{ steps.diff.outputs.changed }}
 
       # - name: Test
       #   run: yarn workspace ${{ matrix.workspace }} test
