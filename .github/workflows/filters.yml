@@ -33,14 +33,11 @@ jobs:
         run: yarn install
 
       - name: Echo
-        run: ${{ steps.diff.outputs.changes }}
+        run: echo ${{ steps.diff.outputs.changes }}
 
       - name: Echo
-        run: ${{ fromJson(steps.diff.outputs.changes, ${{ matrix.workspace }}) }}
-
-      - name: Echo
-        run: ${{ contains(fromJson(steps.diff.outputs.changes, ${{ matrix.workspace }})) }}
+        run: echo ${{ fromJson(steps.diff.outputs.changes) }}
 
       - name: Test
         run: yarn workspace ${{ matrix.workspace }} test
-        if: contains(fromJson(steps.diff.outputs.changes, ${{ matrix.workspace }}))
+        if: contains(fromJson(steps.diff.outputs.changes), ${{ matrix.workspace }})
