@@ -22,7 +22,6 @@ jobs:
       - uses: dorny/paths-filter@v2.11.1
         id: diff
         with:
-          base: main
           # filters: .github/workspaces.yml
           filters: |
             changed:
@@ -39,7 +38,8 @@ jobs:
 
       - name: Echo changed
         run: echo ${{ steps.diff.outputs.changed }}
+        if: steps.diff.outputs.changed
 
       # - name: Test
       #   run: yarn workspace ${{ matrix.workspace }} test
-      #   if: contains(steps.diff.outputs.changes, ${{ matrix.workspace }})
+      #   if: steps.diff.outputs.changed
