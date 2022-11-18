@@ -23,23 +23,25 @@ jobs:
 
     needs: filters
 
-    strategy:
-      fail-fast: true
-      matrix:
-        workspace: ${{ fromJson(needs.filters.outputs.changes) }}
+    # strategy:
+    #   fail-fast: true
+    #   matrix:
+    #     workspace: ${{ fromJson(needs.filters.outputs.changes) }}
 
     steps:
       - uses: actions/checkout@v3.1.0
 
-      - name: Setup Node
-        uses: actions/setup-node@v3.5.1
-        with:
-          cache: 'yarn'
-          node-version: '18'
+      - run: echo ${{ fromJson(needs.filters.outputs) }}
 
-      - name: Install
-        run: yarn install
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3.5.1
+      #   with:
+      #     cache: 'yarn'
+      #     node-version: '18'
 
-      - name: Test
-        # if: fromJson(steps.diff.outputs.${{ matrix.workspace }}) == true
-        run: yarn workspace ${{ matrix.workspace }} test
+      # - name: Install
+      #   run: yarn install
+
+      # - name: Test
+      #   # if: fromJson(steps.diff.outputs.${{ matrix.workspace }}) == true
+      #   run: yarn workspace ${{ matrix.workspace }} test
