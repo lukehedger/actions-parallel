@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      changes: ${{ steps.filter.outputs.changes }}
-      filters: ${{ steps.filter.outputs.* }}
+      changed: ${{ steps.filter.outputs.changes }}
+      unchanged: ${{ steps.filter.outputs.changes }}
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -22,6 +22,9 @@ jobs:
         with:
           filters: .github/workspaces.yml
 
+      - name: Set unchanged output
+        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ fromJson(needs.diff.outputs) }})" >> $GITHUB_OUTPUT
+
   test:
     runs-on: ubuntu-latest
 
@@ -30,7 +33,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        workspace: ${{ fromJson(needs.diff.outputs.changes) }}
+        workspace: ${{ fromJson(needs.diff.outputs.changed) }}
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -57,13 +60,9 @@ jobs:
 
     needs: diff
 
-    # strategy:
-    #   fail-fast: true
-    #   matrix:
-    #     # TODO: Build matrix from any keys with value "false"
-    #     workspace: ${{ fromJson(needs.diff.outputs.changes) }}
+    strategy:
+      matrix:
+        workspace: ${{ fromJson(needs.diff.outputs.unchnaged) }}
 
     steps:
-      # - run: echo No test required
-      - run: echo ${{ toJson(needs.diff.outputs.filters) }}
-      # - run: echo "$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ fromJson(needs.diff.outputs) }})"
+      - run: echo No test required"
