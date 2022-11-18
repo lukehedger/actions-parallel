@@ -13,8 +13,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        directory: [a, b, c]
-        # workspace: ['@workspace/a', '@workspace/b', '@workspace/c']
+        workspace: ['@workspace/a', '@workspace/b', '@workspace/c']
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -22,10 +21,7 @@ jobs:
       - uses: dorny/paths-filter@v2.11.1
         id: diff
         with:
-          # filters: .github/workspaces.yml
-          filters: |
-            changed:
-              - '${{matrix.directory}}/**'
+          filters: .github/workspaces.yml
 
       - name: Setup Node
         uses: actions/setup-node@v3.5.1
@@ -37,9 +33,9 @@ jobs:
         run: yarn install
 
       - name: Echo changed
-        run: echo ${{ steps.diff.outputs.changed }}
-        if: steps.diff.outputs.changed == 'true'
+        run: echo changed!
+        if: steps.diff.outputs.${{ matrix.workspace }} == 'true'
 
-      # - name: Test
-      #   run: yarn workspace ${{ matrix.workspace }} test
-      #   if: steps.diff.outputs.changed
+      - name: Test
+        run: yarn workspace ${{ matrix.workspace }} test
+        if: steps.diff.outputs.${{ matrix.workspace }} == 'true'
