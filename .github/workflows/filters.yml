@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3.1.0
 
       - uses: dorny/paths-filter@v2.11.1
-        id: changes
+        id: diff
         with:
           filters: .github/workspaces.yml
 
@@ -34,4 +34,4 @@ jobs:
 
       - name: Test
         run: yarn workspace ${{ matrix.workspace }} test
-        if: steps.changes.outputs.${{ matrix.workspace }}
+        if: contains(fromJson(steps.diff.outputs.changes, ${{ matrix.workspace }}))
