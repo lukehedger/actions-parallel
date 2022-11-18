@@ -23,6 +23,10 @@ jobs:
         with:
           filters: .github/workspaces.yml
 
+      - name: Early exit
+        run: exit 0
+        if: steps.diff.outputs.${{ matrix.workspace }} == 'false'
+
       - name: Setup Node
         uses: actions/setup-node@v3.5.1
         with:
@@ -33,8 +37,7 @@ jobs:
         run: yarn install
 
       - name: Echo changed
-        run: echo ${{ steps.diff.outputs }}
+        run: echo ${{ fromJson(steps.diff.outputs) }}
 
       - name: Test
         run: yarn workspace ${{ matrix.workspace }} test
-        if: steps.diff.outputs.${{ matrix.workspace }} == 'true'
