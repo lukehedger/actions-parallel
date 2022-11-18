@@ -10,6 +10,9 @@ jobs:
   filters:
     runs-on: ubuntu-latest
 
+    outputs:
+      changes: ${{ steps.diff.outputs.changes }}
+
     steps:
       - uses: actions/checkout@v3.1.0
 
@@ -17,6 +20,9 @@ jobs:
         id: diff
         with:
           filters: .github/workspaces.yml
+
+      - name: Set changes output
+        run: echo "changes=${{ steps.diff.outputs }}" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
