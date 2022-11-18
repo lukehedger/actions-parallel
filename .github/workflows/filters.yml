@@ -33,8 +33,7 @@ jobs:
         run: yarn install
 
       - name: Echo changed
-        run: echo changed!
-        if: steps.diff.outputs.${{ matrix.workspace }} == 'true'
+        run: echo ${{ steps.diff.outputs }}
 
       - name: Test
         run: yarn workspace ${{ matrix.workspace }} test
