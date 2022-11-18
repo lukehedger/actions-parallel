@@ -18,9 +18,6 @@ jobs:
         with:
           filters: .github/workspaces.yml
 
-      - name: Echo outputs
-        run: echo ${{ toJson(steps.diff.outputs.changes) }}
-
   test:
     runs-on: ubuntu-latest
 
@@ -29,12 +26,13 @@ jobs:
     # strategy:
     #   fail-fast: true
     #   matrix:
-    #     workspace: ${{ fromJson(needs.filters.outputs.changes) }}
+    #     workspace: ${{ toJson(needs.filters.outputs.changes) }}
 
     steps:
       - uses: actions/checkout@v3.1.0
 
-      - run: echo ${{ toJson(needs.filters.outputs) }}
+      - name: Echo outputs
+        run: echo ${{ toJson(needs.filters.outputs.changes) }}
 
       # - name: Setup Node
       #   uses: actions/setup-node@v3.5.1
