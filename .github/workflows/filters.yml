@@ -1,0 +1,41 @@
+name: Filters workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  filters:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        workspace: ['@workspace/a', '@workspace/b', '@workspace/c']
+
+    steps:
+      - uses: actions/checkout@v3.1.0
+
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          # filters: .github/workspaces.yaml
+          filters: |
+            @workspace/a:
+              - 'a/**'
+            @workspace/b:
+              - 'b/**'
+            @workspace/c:
+              - 'c/**'
+
+      - name: Setup Node
+        uses: actions/setup-node@v3.5.1
+        with:
+          cache: 'yarn'
+          node-version: '18'
+
+      - name: Install
+        run: yarn install
+
+      - name: Test
+        run: yarn workspace ${{ matrix.workspace }} test
+        if: steps.changes.outputs.${{ matrix.workspace }} == 'true' # Remove true?
