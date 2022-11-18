@@ -4,7 +4,6 @@ on:
   pull_request:
     branches:
     - main
-  workflow_dispatch:
 
 jobs:
   diff:
@@ -14,8 +13,6 @@ jobs:
       changes: ${{ steps.filter.outputs.changes }}
 
     steps:
-      - uses: actions/checkout@v3.1.0
-
       - uses: dorny/paths-filter@v2.11.1
         id: filter
         with:
