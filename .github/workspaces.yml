@@ -4,3 +4,5 @@
   - 'b/**'
 '@workspace/c':
   - 'c/**'
+'@workspace/d':
+  - 'd/**'
