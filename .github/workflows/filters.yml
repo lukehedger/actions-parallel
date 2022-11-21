@@ -65,10 +65,9 @@ jobs:
 
     needs: diff
 
-    # strategy:
-    #   matrix:
-    #     workspace: ${{ fromJson(needs.diff.outputs.unchanged) }}
+    strategy:
+      matrix:
+        workspace: ${{ fromJson(needs.diff.outputs.unchanged) }}
 
     steps:
-      # - run: echo "No test required"
-      - run: echo ${{ needs.diff.outputs.unchanged }}
+      - run: echo "No test required"
