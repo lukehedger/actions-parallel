@@ -51,7 +51,7 @@ jobs:
           node-version: '18'
 
       - name: Early exit
-        if: contains(fromJson(needs.diff.outputs.changed), matrix.workspace)
+        if: ${{ !contains(fromJson(needs.diff.outputs.changed), matrix.workspace) }}
         run: echo "No test required"
 
       - name: Install
