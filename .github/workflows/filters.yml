@@ -70,4 +70,5 @@ jobs:
         workspace: ${{ fromJson(needs.diff.outputs.unchanged) }}
 
     steps:
-      - run: echo "No test required"
+      # - run: echo "No test required"
+      - run: echo ${{ needs.diff.outputs.unchanged }}
