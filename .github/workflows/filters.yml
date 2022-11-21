@@ -15,6 +15,7 @@ jobs:
       unchanged: ${{ steps.filter.outputs.changes }}
 
     steps:
+      # TODO: Remove, not necessary for PR
       - uses: actions/checkout@v3.1.0
 
       - uses: dorny/paths-filter@v2.11.1
@@ -66,4 +67,4 @@ jobs:
         workspace: ${{ fromJson(needs.diff.outputs.unchanged) }}
 
     steps:
-      - run: echo No test required"
+      - run: echo "No test required"

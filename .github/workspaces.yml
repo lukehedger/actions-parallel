@@ -1,3 +1,4 @@
+# TODO: Generate file by scanning directories for package.name
 '@workspace/a':
   - 'a/**'
 '@workspace/b':
