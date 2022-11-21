@@ -23,6 +23,8 @@ jobs:
         with:
           filters: .github/workspaces.yml
 
+      - run: echo ${{ steps.filter.outputs.changed }}
+
       - name: Set WORKSPACE_CHANGED environment variable
         run: echo "WORKSPACE_CHANGED=${{ contains(fromJson(steps.filter.outputs.changed), matrix.workspace) }}" >> $GITHUB_ENV
 
