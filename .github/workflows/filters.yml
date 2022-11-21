@@ -27,7 +27,7 @@ jobs:
 
       - name: Set unchanged output
         id: reverse
-        run: echo "unchanged=jq '[ to_entries | .[] | select(.value == "false") | .key ]' changes.json -c" >> $GITHUB_OUTPUT
+        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' changes.json -c)" >> $GITHUB_OUTPUT
         # run: echo "unchanged=[\"@workspace/d\"]" >> $GITHUB_OUTPUT
 
   test:
