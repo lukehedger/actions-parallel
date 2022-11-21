@@ -25,8 +25,8 @@ jobs:
 
       - name: Set unchanged output
         id: reverse
-        # run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< '${{ toJson(steps.filter.outputs) }}')" >> $GITHUB_OUTPUT
-        run: echo "unchanged=[\"@workspace/d\"]" >> $GITHUB_OUTPUT
+        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< '${{ toJson(steps.filter.outputs) }}')" >> $GITHUB_OUTPUT
+        # run: echo "unchanged=[\"@workspace/d\"]" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
