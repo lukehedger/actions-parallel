@@ -7,34 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  diff:
-    runs-on: ubuntu-latest
-
-    outputs:
-      changed: ${{ steps.filter.outputs.changes }}
-      unchanged: ${{ steps.unchanged.outputs.unchanged }}
-
-    steps:
-      # TODO: Remove, not necessary for PR
-      - uses: actions/checkout@v3.1.0
-
-      - uses: dorny/paths-filter@v2.11.1
-        id: filter
-        with:
-          filters: .github/workspaces.yml
-
-      - name: Write filter outputs to file
-        id: filter-file
-        run: echo '${{ toJson(steps.filter.outputs) }}' > filter.json
-
-      - name: Set unchanged output
-        id: unchanged
-        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' filter.json -c)" >> $GITHUB_OUTPUT
-
   test:
     runs-on: ubuntu-latest
-
-    needs: diff
 
     strategy:
       fail-fast: true
@@ -44,17 +18,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3.1.0
 
+      - uses: dorny/paths-filter@v2.11.1
+        id: filter
+        with:
+          filters: .github/workspaces.yml
+
+      - name: Set WORKSPACE_CHANGED environment variable
+        run: echo "WORKSPACE_CHANGED=${{ contains(fromJson(needs.diff.outputs.changed), matrix.workspace) }}" >> $GITHUB_ENV
+
+      - name: Early exit
+        if: env.WORKSPACE_CHANGED == "false"
+        run: echo "No test required"
+
       - name: Setup Node
+        if: env.WORKSPACE_CHANGED == "true"
         uses: actions/setup-node@v3.5.1
         with:
           cache: 'npm'
           node-version: '18'
 
-      - name: Early exit
-        if: ${{ !contains(fromJson(needs.diff.outputs.changed), matrix.workspace) }}
-        run: echo "No test required"
-
       - name: Install
+        if: env.WORKSPACE_CHANGED == "true"
         run: npm install
 
       # TODO: Lint could go here to save double install
@@ -62,16 +46,5 @@ jobs:
       #   run: npm run lint --workspace=${{ matrix.workspace }} --if-present
 
       - name: Test
+        if: env.WORKSPACE_CHANGED == "true"
         run: npm run test --workspace=${{ matrix.workspace }} --if-present
-
-  no-test:
-    runs-on: ubuntu-latest
-
-    needs: diff
-
-    strategy:
-      matrix:
-        workspace: ${{ fromJson(needs.diff.outputs.unchanged) }}
-
-    steps:
-      - run: echo "No test required"
