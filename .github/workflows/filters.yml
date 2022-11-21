@@ -12,7 +12,7 @@ jobs:
 
     outputs:
       changed: ${{ steps.filter.outputs.changes }}
-      unchanged: ${{ toJson(["@workspace/d"]) }}
+      unchanged: ${{ ["@workspace/d"] }}
 
     steps:
       # TODO: Remove, not necessary for PR
