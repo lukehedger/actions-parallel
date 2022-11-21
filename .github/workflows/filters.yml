@@ -24,7 +24,7 @@ jobs:
           filters: .github/workspaces.yml
 
       - name: Set WORKSPACE_CHANGED environment variable
-        run: echo "WORKSPACE_CHANGED=${{ contains(fromJson(needs.diff.outputs.changed), matrix.workspace) }}" >> $GITHUB_ENV
+        run: echo "WORKSPACE_CHANGED=$(${{ contains(fromJson(needs.diff.outputs.changed), matrix.workspace) }})" >> $GITHUB_ENV
 
       - name: Early exit
         if: env.WORKSPACE_CHANGED == false
