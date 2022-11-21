@@ -23,9 +23,11 @@ jobs:
         with:
           filters: .github/workspaces.yml
 
+      # - run: echo '${{ toJson(steps.filter.outputs) }}' > changes.json
+
       - name: Set unchanged output
         id: reverse
-        run: echo "unchanged=jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ toJson(steps.filter.outputs) }}" >> $GITHUB_OUTPUT
+        run: echo "unchanged=jq '[ to_entries | .[] | select(.value == "false") | .key ]' <<< ${{ toJson(steps.filter.outputs) }} -c" >> $GITHUB_OUTPUT
         # run: echo "unchanged=[\"@workspace/d\"]" >> $GITHUB_OUTPUT
 
   test:
