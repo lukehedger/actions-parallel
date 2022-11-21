@@ -47,19 +47,18 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3.5.1
         with:
-          cache: 'yarn'
+          cache: 'npm'
           node-version: '18'
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       # TODO: Lint could go here to save double install
       # - name: Lint
-      #   run: yarn workspace ${{ matrix.workspace }} lint
+      #   run: npm run lint --workspace=${{ matrix.workspace }} --if-present
 
       - name: Test
-        # TODO: Switch to npm workspaces with --if-present (still passes?)
-        run: yarn workspace ${{ matrix.workspace }} test
+        run: npm run test --workspace=${{ matrix.workspace }} --if-present
 
   no-test:
     runs-on: ubuntu-latest

@@ -7,6 +7,6 @@
     "c"
   ],
   "scripts": {
-    "test": "yarn workspaces run test"
+    "test": "npm run test --workspaces"
   }
 }
