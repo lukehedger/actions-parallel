@@ -27,18 +27,18 @@ jobs:
         run: echo "WORKSPACE_CHANGED=${{ contains(fromJson(needs.diff.outputs.changed), matrix.workspace) }}" >> $GITHUB_ENV
 
       - name: Early exit
-        if: env.WORKSPACE_CHANGED == "false"
+        if: env.WORKSPACE_CHANGED == false
         run: echo "No test required"
 
       - name: Setup Node
-        if: env.WORKSPACE_CHANGED == "true"
+        if: env.WORKSPACE_CHANGED == true
         uses: actions/setup-node@v3.5.1
         with:
           cache: 'npm'
           node-version: '18'
 
       - name: Install
-        if: env.WORKSPACE_CHANGED == "true"
+        if: env.WORKSPACE_CHANGED == true
         run: npm install
 
       # TODO: Lint could go here to save double install
@@ -46,5 +46,5 @@ jobs:
       #   run: npm run lint --workspace=${{ matrix.workspace }} --if-present
 
       - name: Test
-        if: env.WORKSPACE_CHANGED == "true"
+        if: env.WORKSPACE_CHANGED == true
         run: npm run test --workspace=${{ matrix.workspace }} --if-present
