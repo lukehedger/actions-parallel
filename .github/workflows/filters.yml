@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        workspace: ['@workspace/a', '@workspace/b', '@workspace/c', '@workspace/d']
+        # Include the workspace name here if you want to run this job
+        workspace: ['@workspace/a', '@workspace/b', '@workspace/d']
 
     steps:
       - uses: actions/checkout@v3.1.0
@@ -21,17 +22,14 @@ jobs:
       - uses: dorny/paths-filter@v2.11.1
         id: filter
         with:
+          # Include all active workspaces in this file
           filters: .github/workspaces.yml
 
-      - run: echo ${{ steps.filter.outputs.changes }}
-
+      # Set a flag if any files in the workspace have changed
       - name: Set WORKSPACE_CHANGED environment variable
         run: echo "WORKSPACE_CHANGED=${{ contains(fromJson(steps.filter.outputs.changes), matrix.workspace) }}" >> $GITHUB_ENV
 
-      - name: Early exit
-        if: env.WORKSPACE_CHANGED == 'false'
-        run: echo "No test required"
-
+      # Use the flag to prevent running any steps unnecessarily
       - name: Setup Node
         if: env.WORKSPACE_CHANGED == 'true'
         uses: actions/setup-node@v3.5.1
@@ -43,9 +41,8 @@ jobs:
         if: env.WORKSPACE_CHANGED == 'true'
         run: npm install
 
-      # TODO: Lint could go here to save double install
-      # - name: Lint
-      #   run: npm run lint --workspace=${{ matrix.workspace }} --if-present
+      - name: Lint
+        run: npm run lint --workspace=${{ matrix.workspace }} --if-present
 
       - name: Test
         if: env.WORKSPACE_CHANGED == 'true'
