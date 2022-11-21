@@ -12,7 +12,7 @@ jobs:
 
     outputs:
       changed: ${{ steps.filter.outputs.changes }}
-      unchanged: ${{ steps.reverse.outputs.unchanged }}
+      unchanged: ${{ steps.unchanged.outputs.unchanged }}
 
     steps:
       # TODO: Remove, not necessary for PR
@@ -23,12 +23,13 @@ jobs:
         with:
           filters: .github/workspaces.yml
 
-      - run: echo '${{ toJson(steps.filter.outputs) }}' > changes.json
+      - name: Write filter outputs to file
+        id: filter-file
+        run: echo '${{ toJson(steps.filter.outputs) }}' > filter.json
 
       - name: Set unchanged output
-        id: reverse
-        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' changes.json -c)" >> $GITHUB_OUTPUT
-        # run: echo "unchanged=[\"@workspace/d\"]" >> $GITHUB_OUTPUT
+        id: unchanged
+        run: echo "unchanged=$(jq '[ to_entries | .[] | select(.value == "false") | .key ]' filter.json -c)" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
